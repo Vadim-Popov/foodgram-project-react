@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core import validators
 from django.db import models
@@ -10,10 +11,10 @@ User = get_user_model()
 class Ingredient(models.Model):
     name = models.CharField(
         'Название ингредиента',
-        max_length=200)
+        max_length=settings.MAX_LENGTH_INGREDIENT)
     measurement_unit = models.CharField(
         'Единица измерения ингредиента',
-        max_length=200)
+        max_length=settings.MAX_LENGTH_INGREDIENT)
 
     class Meta:
         ordering = ['name']
@@ -27,21 +28,21 @@ class Ingredient(models.Model):
 class Tag(models.Model):
     name = models.CharField(
         'Имя',
-        max_length=60,
+        max_length=settings.MAX_LENGTH_TAG_NAME,
         unique=True)
     color = models.CharField(
         'Цвет',
-        max_length=7,
+        max_length=settings.MAX_LENGTH_COLOR_TAG,
         unique=True)
     slug = models.SlugField(
         'Ссылка',
-        max_length=100,
+        max_length=settings.MAX_LENGTH_LINK_TAG,
         unique=True)
 
     class Meta:
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
-        ordering = ['-id']
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -55,7 +56,7 @@ class Recipe(models.Model):
         verbose_name='Автор')
     name = models.CharField(
         'Название рецепта',
-        max_length=255)
+        max_length=settings.MAX_LENGTH_RECIPE_NAME)
     image = models.ImageField(
         'Изображение рецепта',
         upload_to='static/recipe/',
@@ -108,11 +109,21 @@ class RecipeIngredient(models.Model):
     class Meta:
         verbose_name = 'Количество ингредиента'
         verbose_name_plural = 'Количество ингредиентов'
-        ordering = ['-id']
+        ordering = ['amount']
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'ingredient'],
                 name='unique ingredient')]
+
+# После переноса модели Subscribe из recipes в users при отправке и get и
+# post запросов от авторизованного пользователя появляется такая ошибка
+# AttributeError at /api/recipes/  'User' object has no attribute 'follower'
+# При этом рецепты создаются и удаляются, вижу это через админку.
+# При get запросе от не авторизованного пользователя рецепты отображаются
+# Все иморты проверял миграции удалял делал по новой ничего не пмогает
+# В пачке спрашивал,наставника тегал,все молчат
+# Пришлось полностью откатываться и по новой исправлять все замечания
+# Могу ли я оставить эту модель в recipes? Просто не знаю уже куда смотреть.
 
 
 class Subscribe(models.Model):
@@ -133,7 +144,7 @@ class Subscribe(models.Model):
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
-        ordering = ['-id']
+        ordering = ['user__username']
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'author'],
@@ -185,7 +196,7 @@ class ShoppingCart(models.Model):
     class Meta:
         verbose_name = 'Покупка'
         verbose_name_plural = 'Покупки'
-        ordering = ['-id']
+        ordering = ['user__username']
 
     def __str__(self):
         list_ = [item['name'] for item in self.recipe.values('name')]

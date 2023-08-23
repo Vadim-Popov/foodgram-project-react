@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -134,3 +135,23 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'api.pagination.LimitPageNumberPagination',
     'PAGE_SIZE': 6,
 }
+
+# Константы проекта
+
+# Ingredients
+MAX_LENGTH_INGREDIENT = 200
+
+# Tag
+MAX_LENGTH_TAG_NAME = 60
+MAX_LENGTH_COLOR_TAG = 7
+MAX_LENGTH_LINK_TAG = 100
+
+# Recipe
+MAX_LENGTH_RECIPE_NAME = 255
+
+# User
+MAX_LENGTH_EMAIL = 200
+MAX_LENGTH_USER_NAME = 150
+
+# Shoppingcart
+SHOPPINGCART = 'shoppingcart.pdf'
