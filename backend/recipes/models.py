@@ -115,44 +115,6 @@ class RecipeIngredient(models.Model):
                 fields=['recipe', 'ingredient'],
                 name='unique ingredient')]
 
-# После переноса модели Subscribe из recipes в users при отправке и get и
-# post запросов от авторизованного пользователя появляется такая ошибка
-# AttributeError at /api/recipes/  'User' object has no attribute 'follower'
-# При этом рецепты создаются и удаляются, вижу это через админку.
-# При get запросе от не авторизованного пользователя рецепты отображаются
-# Все иморты проверял миграции удалял делал по новой ничего не пмогает
-# В пачке спрашивал,наставника тегал,все молчат
-# Пришлось полностью откатываться и по новой исправлять все замечания
-# Могу ли я оставить эту модель в recipes? Просто не знаю уже куда смотреть.
-
-
-class Subscribe(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='follower',
-        verbose_name='Подписчик')
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='following',
-        verbose_name='Автор')
-    created = models.DateTimeField(
-        'Дата подписки',
-        auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
-        ordering = ['user__username']
-        constraints = [
-            models.UniqueConstraint(
-                fields=['user', 'author'],
-                name='unique_subscription')]
-
-    def __str__(self):
-        return f'Пользователь {self.user} -> автор {self.author}'
-
 
 class FavoriteRecipe(models.Model):
     user = models.OneToOneField(

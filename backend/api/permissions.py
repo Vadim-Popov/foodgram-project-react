@@ -8,12 +8,3 @@ class IsAuthorOrAdminOrReadOnly(permissions.BasePermission):
         elif obj.author == request.user:
             return True
         return False
-
-
-class IsAdminOrReadOnly(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        elif request.user.is_staff:
-            return True
-        return False

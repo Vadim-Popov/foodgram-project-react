@@ -3,11 +3,13 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.hashers import check_password, make_password
 from django.shortcuts import get_object_or_404
 from drf_base64.fields import Base64ImageField
-from recipes.models import Ingredient, Recipe, RecipeIngredient, Subscribe, Tag
 from rest_framework import serializers
 
+from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
+from users.models import Subscribe
+
 User = get_user_model()
-ERR_MSG = 'Не удается войти в систему с предоставленными учетными данными.'
+ERR_MSG = 'Не удается войти с предоставленными учетными данными.'
 
 
 class TokenSerializer(serializers.Serializer):
@@ -47,11 +49,10 @@ class TokenSerializer(serializers.Serializer):
 class GetIsSubscribedMixin:
 
     def get_is_subscribed(self, obj):
-        user = self.context['request'].user
         return (
-            user.follower.filter(author=obj).exists()
-            if user.is_authenticated
-            else False
+            self.context.get('request').user.is_authenticated
+            and Subscribe.objects.filter(user=self.context['request'].user,
+                                         author=obj).exists()
         )
 
 
