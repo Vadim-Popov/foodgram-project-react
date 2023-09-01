@@ -31,12 +31,12 @@ Foodgram использует технологии:
 - [Gunicorn] (v.20.1.0) - Python WSGI HTTP-сервер для UNIX
 
 ### Заполняем .env 
-SECRET_KEY = 'секретный ключ из settings'
-DB_NAME = имя базы данных
-POSTGRES_USER = логин для подключения к БД
-POSTGRES_PASSWORD = пароль для подключения к БД
-DB_HOST = название контейнера
-DB_PORT = порт для подключения к БД
+- SECRET_KEY = 'секретный ключ из settings'
+- DB_NAME = имя базы данных
+- POSTGRES_USER = логин для подключения к БД
+- POSTGRES_PASSWORD = пароль для подключения к БД
+- DB_HOST = название контейнера
+- DB_PORT = порт для подключения к БД
 
 ### Развертывание проекта на локальном сервере
 1. Установите на сервер `docker` и `docker-compose`.
