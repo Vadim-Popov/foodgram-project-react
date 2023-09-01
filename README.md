@@ -48,6 +48,7 @@ DB_PORT = порт для подключения к БД
 7. `docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/`
 8. Заполните базу ингредиентами `docker-compose exec backend python manage.py load_ingredients`.
 9. Заполните базу тегами `docker-compose exec backend python manage.py load_tags`.
+10. Документация с примерами запросов находится по адресу: <http://localhost/api/docs/redoc.html>.
 
 ### Для ревьюера
 - Данные от админ панели
