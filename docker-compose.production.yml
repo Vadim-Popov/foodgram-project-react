@@ -11,7 +11,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    build: ../backend/
+    image: negative777/backend
     env_file: .env
     depends_on:
       - db
@@ -21,7 +21,7 @@ services:
 
   frontend:
     env_file: .env
-    build: ../frontend/
+    image: negative777/foodgram_frontend
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
@@ -29,7 +29,7 @@ services:
   nginx:
     image: nginx:1.19.3
     ports:
-      - "80:80"
+      - "8000:80"
     volumes:
       - static:/static/
       - media:/app/media/
