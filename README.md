@@ -50,11 +50,6 @@ Foodgram использует технологии:
 9. Заполните базу тегами `docker-compose exec backend python manage.py load_tags`.
 10. Документация с примерами запросов находится по адресу: <http://localhost/api/docs/redoc.html>.
 
-### Для ревьюера
-- Данные от админ панели
-Логин: msi@ya.ru
-Пароль: msi
-Домен: kittygram77.ru
 
 ### Автор
 [Vadim - Popov](https://github.com/Vadim-Popov)
